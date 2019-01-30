@@ -13,24 +13,10 @@ class SignUp extends Component {
     };
   }
 
-  updateEmailField = event => {
-    this.setState({ email: event.target.value });
-  };
-
-  updatePasswordField = event => {
-    this.setState({ password: event.target.value });
-  };
-
-  updatePasswordVerificationField = event => {
-    this.setState({ passwordVerification: event.target.value });
-  };
-
-  updateNameField = event => {
-    this.setState({ name: event.target.value });
-  };
-
-  updateLastNameField = event => {
-    this.setState({ lastName: event.target.value });
+  updateField = event => {
+    let name = event.target.name;
+    let value = event.target.value;
+    this.setState({ [name]: value });
   };
 
   handleSubmit = event => {
@@ -41,6 +27,7 @@ class SignUp extends Component {
       passwordVerification: '',
       name: '',
       lastName: '',
+      countryCode: '',
       alert: 'block'
     });
     setTimeout(() => {
@@ -70,7 +57,7 @@ class SignUp extends Component {
             name='email'
             placeholder='Your email'
             value={this.state.email}
-            onChange={this.updateEmailField}
+            onChange={this.updateField}
           />
           <br />
           <input
@@ -78,7 +65,7 @@ class SignUp extends Component {
             name='password'
             placeholder='Your password'
             value={this.state.password}
-            onChange={this.updatePasswordField}
+            onChange={this.updateField}
           />
           <br />
           <input
@@ -86,7 +73,7 @@ class SignUp extends Component {
             name='passwordVerification'
             placeholder='Please re-enter your password'
             value={this.state.passwordVerification}
-            onChange={this.updatePasswordVerificationField}
+            onChange={this.updateField}
           />
           <br />
           <input
@@ -94,7 +81,16 @@ class SignUp extends Component {
             name='name'
             placeholder='Your name here'
             value={this.state.name}
-            onChange={this.updateNameField}
+            onChange={this.updateField}
+          />
+          <br />
+          <input
+            type='text'
+            name='countryCode'
+            placeholder='Your country code (XXX)'
+            pattern='[A-Za-z0-9]{3}'
+            value={this.state.countryCode}
+            onChange={this.updateField}
           />
           <br />
           <input
@@ -102,7 +98,7 @@ class SignUp extends Component {
             name='last_name'
             placeholder='Your last name here'
             value={this.state.lastName}
-            onChange={this.updateLastNameField}
+            onChange={this.updateField}
           />
           <br />
           <input type='submit' value='Submit' />
