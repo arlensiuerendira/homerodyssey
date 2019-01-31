@@ -9,7 +9,11 @@ class SignUp extends Component {
       passwordVerification: '',
       name: '',
       lastName: '',
-      alert: 'none'
+      alert: 'none',
+      details: 'none',
+      newname: '',
+      newname2: '',
+      countryCode: ''
     };
   }
 
@@ -22,25 +26,54 @@ class SignUp extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.setState({
-      email: '',
-      password: '',
-      passwordVerification: '',
-      name: '',
-      lastName: '',
-      countryCode: '',
-      alert: 'block'
+      alert: 'block',
+      details: 'block'
     });
     setTimeout(() => {
-      this.setState({ alert: 'none' });
+      this.setState({
+        alert: 'none'
+      });
     }, 1500);
+  };
+
+  handleSubmit2 = event => {
+    event.preventDefault();
+    this.setState({
+      newname2: this.state.newname
+    });
   };
 
   render() {
     let entries = Object.entries(this.state);
+
+    let person = {
+      firstName: this.state.name,
+      lastName: this.state.lastName
+    };
+    Object.defineProperty(person, 'Hello', {
+      get: function() {
+        return `Hello ${this.firstName} ${
+          this.lastName
+        } !! I hope you are doing well today !!`;
+      },
+      set: function(name) {
+        let regex = /[0-9]/g;
+        console.log(regex.test(name));
+        if (!regex.test(name)) {
+          let splitName = name.split(' ');
+          this.firstName = splitName[0];
+          this.lastName = splitName[1];
+        } else {
+          this.firstName = this.firstName;
+          this.lastName = this.lastName;
+        }
+      }
+    });
+
     return (
-      <div className='container'>
+      <div className='container' align='center'>
         <div className='row'>
-          <div className='col-8 offset-2'>
+          <div className='col-6'>
             <h5 className='my-3'>Verify your information:</h5>
             {entries.map(state => {
               return (
@@ -50,65 +83,94 @@ class SignUp extends Component {
               );
             })}
           </div>
+          <form className='content' onSubmit={this.handleSubmit}>
+            <input
+              className='mt-5'
+              type='email'
+              name='email'
+              placeholder='Your email'
+              value={this.state.email}
+              onChange={this.updateField}
+            />
+            <br />
+            <input
+              type='password'
+              name='password'
+              placeholder='Your password'
+              value={this.state.password}
+              onChange={this.updateField}
+              className='mt-2'
+            />
+            <br />
+            <input
+              type='password'
+              name='passwordVerification'
+              placeholder='Please re-enter your password'
+              value={this.state.passwordVerification}
+              onChange={this.updateField}
+              className='mt-2'
+            />
+            <br />
+            <input
+              type='text'
+              name='name'
+              placeholder='Your name here'
+              value={this.state.name}
+              onChange={this.updateField}
+              className='mt-2'
+            />
+            <br />
+            <input
+              type='text'
+              name='lastName'
+              placeholder='Your last name here'
+              value={this.state.lastName}
+              onChange={this.updateField}
+              className='mt-2'
+            />
+            <br />
+            <input
+              type='text'
+              name='countryCode'
+              placeholder='Your country code (XXX)'
+              pattern='[A-Za-z0-9]{3}'
+              value={this.state.countryCode}
+              onChange={this.updateField}
+              className='mt-2'
+            />
+            <br />
+            <input type='submit' value='Submit' className='mt-2' />
+          </form>
+          <br />
+          <div
+            className='alert alert-primary col-12'
+            role='alert'
+            style={{ display: `${this.state.alert}` }}
+          >
+            Form has been sent
+          </div>
         </div>
-        <form className='content' onSubmit={this.handleSubmit}>
-          <input
-            type='email'
-            name='email'
-            placeholder='Your email'
-            value={this.state.email}
-            onChange={this.updateField}
-          />
-          <br />
-          <input
-            type='password'
-            name='password'
-            placeholder='Your password'
-            value={this.state.password}
-            onChange={this.updateField}
-          />
-          <br />
-          <input
-            type='password'
-            name='passwordVerification'
-            placeholder='Please re-enter your password'
-            value={this.state.passwordVerification}
-            onChange={this.updateField}
-          />
-          <br />
-          <input
-            type='text'
-            name='name'
-            placeholder='Your name here'
-            value={this.state.name}
-            onChange={this.updateField}
-          />
-          <br />
-          <input
-            type='text'
-            name='countryCode'
-            placeholder='Your country code (XXX)'
-            pattern='[A-Za-z0-9]{3}'
-            value={this.state.countryCode}
-            onChange={this.updateField}
-          />
-          <br />
-          <input
-            type='text'
-            name='last_name'
-            placeholder='Your last name here'
-            value={this.state.lastName}
-            onChange={this.updateField}
-          />
-          <br />
-          <input type='submit' value='Submit' />
-        </form>
-        <div
-          className='alert alert-primary col-12'
-          role='alert'
-          style={{ display: `${this.state.alert}` }}
-        >
-          Form has been sent
+        <div style={{ display: `${this.state.details}` }} className='row'>
+          <div className='col-4 offset-1 my-5'>
+            <div>
+              {this.state.newname2 === ''
+                ? person.Hello
+                : ((person.Hello = this.state.newname2), person.Hello)}
+            </div>
+          </div>
+          <div className='col-4 offset-1 my-5'>
+            <form onSubmit={this.handleSubmit2}>
+              <input
+                type='text'
+                name='newname'
+                placeholder='New Name Lastname'
+                value={this.state.newname}
+                onChange={this.updateField}
+              />
+              <br />
+              <input type='submit' value='Submit' />
+            </form>
+          </div>
         </div>
       </div>
     );
